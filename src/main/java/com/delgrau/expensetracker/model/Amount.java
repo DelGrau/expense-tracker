@@ -19,6 +19,15 @@ public class Amount {
         return new Amount(Math.round(value * 100.0f));
     }
 
+    public static Amount fromCurrency (double value) {
+        return new Amount(Math.round(value * 100.0));
+    }
+
+    public static Amount valueOf(String s) {
+        var value = Double.parseDouble(s);
+        return Amount.fromCurrency(value);
+    }
+
     public long getCents () {
         return cents;
     }
