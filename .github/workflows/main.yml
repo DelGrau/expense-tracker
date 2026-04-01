@@ -1,0 +1,35 @@
+name: Java CI with GraalVM
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Test with Maven
+        run: mvn clean package -Pnative
+
+      - name: Integration Test
+        run: |
+          $output = .\target\expense-tracker.exe -d "Teste Pipeline" -v 100
+          if ($output -like "*Processando... Teste Pipeline*") { 
+            echo "Test passed!" 
+          } else { 
+            echo "Test failed!"; exit 1 
+          }
