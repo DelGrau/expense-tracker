@@ -27,10 +27,14 @@ jobs:
 
       - name: Integration Test
         run: |
+          # Rodamos o exe e guardamos o resultado
           $output = .\target\expense-tracker.exe -d "Teste Pipeline" -v 100
-          if ($output -like "*Processando...\nDescricao: Teste Pipeline*") { 
-            echo "Test passed!" 
+          
+          # Verificamos se a descrição correta aparece no bolo de texto
+          if ($output -like "*Descricao: Teste Pipeline*") { 
+            Write-Host "Test passed!" -ForegroundColor Green
           } else { 
-            echo "Test failed!"
-            echo $output; exit 1 
+            Write-Host "Test failed!" -ForegroundColor Red
+            $output | Write-Host
+            exit 1 
           }
