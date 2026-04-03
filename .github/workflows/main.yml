@@ -28,8 +28,9 @@ jobs:
       - name: Integration Test
         run: |
           $output = .\target\expense-tracker.exe -d "Teste Pipeline" -v 100
-          if ($output -like "*Processando... Teste Pipeline*") { 
+          if ($output -like "*Processando...\nDescricao: Teste Pipeline*") { 
             echo "Test passed!" 
           } else { 
-            echo "Test failed!"; exit 1 
+            echo "Test failed!"
+            echo $output; exit 1 
           }
