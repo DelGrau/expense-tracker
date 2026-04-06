@@ -5,8 +5,6 @@ import com.delgrau.expensetracker.model.Amount;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
-import java.util.concurrent.Callable;
-
 @Command(
     name = "expense-tracker",
     mixinStandardHelpOptions = true,
