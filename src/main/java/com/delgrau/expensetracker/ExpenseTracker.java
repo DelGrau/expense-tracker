@@ -1,52 +1,22 @@
 package com.delgrau.expensetracker;
 
+import com.delgrau.expensetracker.commands.AddCommand;
 import com.delgrau.expensetracker.model.Amount;
 import picocli.CommandLine;
-import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
 
 import java.util.concurrent.Callable;
 
-@Command(name = "expense-tracker", /* mixinStandardHelpOptions = true,*/ version = "1.0",
-    description = "Personal Expense Tracker via command line.")
-public class ExpenseTracker implements Callable<Integer> {
-
-    @Option(names = {"-h", "--help"}, usageHelp = true, description = "Exibe esta mensagem de ajuda")
-    private boolean helpRequested;
-
-    @Option(names = {"-V", "--version"}, versionHelp = true, description = "Exibe a versão do programa")
-    private boolean versionRequested;
-
-    @Option(names = {"-d", "--description"}, required = true)
-    private String description;
-
-    @Option(names = {"-v", "--value"}, required = true)
-    private Amount value;
-
-    public String getDescription() {
-        return description;
-    }
-
-    public double getValue() {
-        return value.getAmount();
-    }
-
-    public long getCents() {
-        return value.getCents();
-    }
-
+@Command(
+    name = "expense-tracker",
+    mixinStandardHelpOptions = true,
+    version = "1.1",
+    description = "Personal CLI app for tracking your expenses.",
+    subcommands = { AddCommand.class })
+public class ExpenseTracker implements Runnable {
     @Override
-    public Integer call() throws Exception {
-        try {
-            System.out.println("Processando...");
-            System.out.println("Descricao: " + getDescription());
-            System.out.println("Valor: " + getValue() +
-                    " (ou " + getCents() + " centavos).");
-            return 0;
-        } catch (Exception e) {
-            System.out.println("Oops, algo deu errado...");
-        }
-        return 500;
+    public void run() {
+        System.out.println("Type 'expense-tracker add --help' to get some help adding a new expense.");
     }
 
     public static void main(String[] args) {
