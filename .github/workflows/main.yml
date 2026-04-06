@@ -33,6 +33,7 @@ jobs:
           # Verificamos se a descrição correta aparece no bolo de texto
           if ($output -like "*Description: Teste Pipeline*") { 
             Write-Host "Test passed!" -ForegroundColor Green
+            $output | Write-Host
           } else { 
             Write-Host "Test failed!" -ForegroundColor Red
             $output | Write-Host
