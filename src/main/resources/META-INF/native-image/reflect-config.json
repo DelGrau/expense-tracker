@@ -1,0 +1,19 @@
+[
+  {
+    "name": "com.delgrau.expensetracker.model.Expense",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.delgrau.expensetracker.model.Amount",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.util.ArrayList",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  }
+]
