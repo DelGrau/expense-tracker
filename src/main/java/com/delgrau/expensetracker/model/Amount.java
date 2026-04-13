@@ -35,5 +35,9 @@ public class Amount {
     public double getAmount () {
         return cents / 100.0;
     }
+
+    public String toString () {
+        return String.format("%.2f", getAmount()).replace(".", ",");
+    }
 }
 
