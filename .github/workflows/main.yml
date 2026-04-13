@@ -25,13 +25,28 @@ jobs:
       - name: Build and Test with Maven
         run: mvn clean package -Pnative
 
-      - name: Add command tests
+      - name: Add command tests#1
         run: |
           # Rodamos o exe e guardamos o resultado
           $output = .\target\expense-tracker.exe add -d "Teste Pipeline" -a 100
           
           # Verificamos se a descrição correta aparece no bolo de texto
-          if ($output -like "*Description: Teste Pipeline*") { 
+          if ($output -like "*Expense added successfully (ID: 1)*") { 
+            Write-Host "Test passed!" -ForegroundColor Green
+            $output | Write-Host
+          } else { 
+            Write-Host "Test failed!" -ForegroundColor Red
+            $output | Write-Host
+            exit 1 
+          }
+
+      - name: Add command tests#2
+        run: |
+          # Rodamos o exe e guardamos o resultado
+          $output = .\target\expense-tracker.exe add -d "D20" -a 23.99
+
+          # Verificamos se a descrição correta aparece no bolo de texto
+          if ($output -like "*# 2    D20          R$23,99*") { 
             Write-Host "Test passed!" -ForegroundColor Green
             $output | Write-Host
           } else { 
