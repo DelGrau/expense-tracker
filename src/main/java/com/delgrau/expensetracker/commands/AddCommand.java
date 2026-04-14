@@ -35,7 +35,7 @@ public class AddCommand implements Callable<Integer> {
 
         repo.saveExpenses(expenses);
 
-        System.out.println(newExpense);
+        // System.out.println(newExpense);
 
         System.out.println("Expense added successfully (ID: " + newExpense.getId() + ")");
         return 0;
