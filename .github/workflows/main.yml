@@ -55,13 +55,13 @@ jobs:
             exit 1 
           }
 
-      - name: Add command tests#3
+      - name: Summary command tests#1
         run: |
           # Check for '# Total expenses: R$123,99'
           $output = .\target\expense-tracker.exe summary
 
           # Verificamos se a descrição correta aparece no bolo de texto
-          if ($output -like "*# Total expenses: R$123,99") { 
+          if ($output -like "*# Total expenses: R$123,99*") { 
             Write-Host "Test passed!" -ForegroundColor Green
             $output | Write-Host
           } else { 
