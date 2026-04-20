@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.delgrau.expensetracker.commands.AddCommand;
+
 public class AddCommandTest {
 
   @Test
