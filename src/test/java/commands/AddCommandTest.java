@@ -28,6 +28,6 @@ public class AddCommandTest {
     }
     
     assertEquals(0, exitCode, "O comando deve terminar com sucesso (0)");
-    assertTrue(output.contains("Expense added successfully (ID: 1)", "Output atual: " + output));
+    assertTrue(output.contains("Expense added successfully (ID: 1)");
   }
 }
