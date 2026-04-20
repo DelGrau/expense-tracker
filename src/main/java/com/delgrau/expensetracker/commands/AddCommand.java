@@ -7,7 +7,9 @@ import com.delgrau.expensetracker.converter.AmountConverter;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.Spec;
 
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.concurrent.Callable;
 
