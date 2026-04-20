@@ -15,15 +15,19 @@ public class AddCommandTest {
 
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
-    cmd.setOut(new PrintWriter(sw));
-    cmd.setErr(new PrintWriter(sw));
+    cmd.setOut(pw);
+    cmd.setErr(pw);
 
     int exitCode = cmd.execute("-d", "String de Teste", "-a", "10");
     pw.flush();
     
     String output = sw.toString();
+
+    if (exitCode != 0) {
+        System.out.println("ERRO DO PICOCLI:\n" + output);
+    }
     
     assertEquals(0, exitCode, "O comando deve terminar com sucesso (0)");
-    assertTrue(output.contains("Expense added successfully (ID: 1)"));
+    assertTrue(output.contains("Expense added successfully (ID: 1)", "Output atual: " + output));
   }
 }
