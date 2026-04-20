@@ -6,6 +6,7 @@ import com.delgrau.expensetracker.repository.ExpenseRepository;
 import com.delgrau.expensetracker.converter.AmountConverter;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Model.CommandSpec;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -13,6 +14,9 @@ import java.util.concurrent.Callable;
 @Command(name = "add", description = "Adds a new expense.")
 public class AddCommand implements Callable<Integer> {
 
+    @Spec 
+    CommandSpec spec;
+    
     @Option(names = {"-d", "--description"}, required = true, description = "Describes a expense.")
     private String description;
 
@@ -36,9 +40,8 @@ public class AddCommand implements Callable<Integer> {
 
         repo.saveExpenses(expenses);
 
-        // System.out.println(newExpense);
-
-        System.out.println("Expense added successfully (ID: " + newExpense.getId() + ")");
+        PrintWriter out = spec.commandLine().getOut();
+        out.println("Expense added successfully (ID: " + newExpense.getId() + ")");
         return 0;
     }
 }
