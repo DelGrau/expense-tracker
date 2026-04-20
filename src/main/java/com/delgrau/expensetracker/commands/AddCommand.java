@@ -3,6 +3,7 @@ package com.delgrau.expensetracker.commands;
 import com.delgrau.expensetracker.model.Amount;
 import com.delgrau.expensetracker.model.Expense;
 import com.delgrau.expensetracker.repository.ExpenseRepository;
+import com.delgrau.expensetracker.converter.AmountConverter;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
 
@@ -15,7 +16,7 @@ public class AddCommand implements Callable<Integer> {
     @Option(names = {"-d", "--description"}, required = true, description = "Describes a expense.")
     private String description;
 
-    @Option(names = {"-a", "--amount"}, required = true, description = "How much a expense costs.")
+    @Option(names = {"-a", "--amount"}, required = true, description = "How much a expense costs.", converter = AmountConverter.class)
     private Amount amount;
 
     @Override
