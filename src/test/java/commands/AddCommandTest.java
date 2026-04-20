@@ -22,6 +22,7 @@ public class AddCommandTest {
     pw.flush();
     
     String output = sw.toString();
+    System.out.println(output);
 
     if (exitCode != 0) {
         System.out.println("ERRO DO PICOCLI:\n" + output);
