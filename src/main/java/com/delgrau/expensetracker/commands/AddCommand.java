@@ -25,6 +25,9 @@ public class AddCommand implements Callable<Integer> {
     @Option(names = {"-a", "--amount"}, required = true, description = "How much a expense costs.", converter = AmountConverter.class)
     private Amount amount;
 
+    @Option(names = {"-c", "--category"}, defaultValue = "", description = "Expense category.")
+    private String category;
+
     @Override
     public Integer call() {
         ExpenseRepository repo = new ExpenseRepository();
@@ -37,7 +40,7 @@ public class AddCommand implements Callable<Integer> {
             nextId = lastExpense.getId() + 1;
         }
 
-        Expense newExpense = new Expense(nextId, description, amount.getAmount());
+        Expense newExpense = new Expense(nextId, description, amount.getAmount(), category);
         expenses.add(newExpense);
 
         repo.saveExpenses(expenses);
