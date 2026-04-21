@@ -82,4 +82,17 @@ public class AddCommandTest {
     assertEquals(2, exitCode, "Command should not finish with a success (2)");
     assertTrue(output.contains("Invalid value for option '--amount'"));
   }
+
+  @Test
+  public void testPassingIntCategory() {
+    cmd.setOut(pw);
+    cmd.setErr(pw);
+
+    int exitCode = cmd.execute("-a", "15.67", "-d", "Int on Category", "-c", "10");
+
+    String output = sw.toString();
+
+    assertEquals(0, exitCode, "Command should finish with a success (0)");
+    assertTrue(output.contains("Expense added successfully"));
+  }
 }
