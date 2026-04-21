@@ -19,7 +19,7 @@ public class AddCommandTest {
     cmd.setOut(pw);
     cmd.setErr(pw);
 
-    int exitCode = cmd.execute("-d", "Test Expense", "-a", "10", "-c", "Category");
+    int exitCode = cmd.execute("-d", "Valid Expense", "-a", "10", "-c", "Valid");
     pw.flush();
     
     String output = sw.toString();
@@ -33,7 +33,7 @@ public class AddCommandTest {
     cmd.setOut(pw);
     cmd.setErr(pw);
 
-    int exitCode = cmd.execute("-d", "Test Expense", "-a", "10,50");
+    int exitCode = cmd.execute("-d", "Amount w/ Comma", "-a", "10,50");
     pw.flush();
 
     String output = sw.toString();
@@ -47,7 +47,7 @@ public class AddCommandTest {
     cmd.setOut(pw);
     cmd.setErr(pw);
 
-    int exitCode = cmd.execute("-d", "Test Expense");
+    int exitCode = cmd.execute("-d", "Amountless");
     pw.flush();
 
     String output = sw.toString();
@@ -75,7 +75,7 @@ public class AddCommandTest {
     cmd.setOut(pw);
     cmd.setErr(pw);
 
-    int exitCode = cmd.execute("-a", "Test", "-d", "Description");
+    int exitCode = cmd.execute("-a", "Test", "-d", "String as Amount");
 
     String output = sw.toString();
 
