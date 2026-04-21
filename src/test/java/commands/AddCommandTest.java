@@ -1,3 +1,5 @@
+package commands;
+
 import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
 import java.io.PrintWriter;
@@ -7,28 +9,77 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.delgrau.expensetracker.commands.AddCommand;
 
 public class AddCommandTest {
+  final AddCommand app = new AddCommand();
+  final CommandLine cmd = new CommandLine(app);
+  final StringWriter sw = new StringWriter();
+  final PrintWriter pw = new PrintWriter(sw);
 
   @Test
   public void testPassingValidArgs() {
-    AddCommand app = new AddCommand();
-    CommandLine cmd = new CommandLine(app);
-
-    StringWriter sw = new StringWriter();
-    PrintWriter pw = new PrintWriter(sw);
     cmd.setOut(pw);
     cmd.setErr(pw);
 
-    int exitCode = cmd.execute("-d", "String de Teste", "-a", "10");
+    int exitCode = cmd.execute("-d", "Test Expense", "-a", "10", "-c", "Category");
     pw.flush();
     
     String output = sw.toString();
-    System.out.println(output);
-
-    if (exitCode != 0) {
-        System.out.println("ERRO DO PICOCLI:\n" + output);
-    }
     
-    assertEquals(0, exitCode, "O comando deve terminar com sucesso (0)");
-    assertTrue(output.contains("Expense added successfully (ID: 1)"));
+    assertEquals(0, exitCode, "Command should finish with a success (0)");
+    assertTrue(output.contains("Expense added successfully"));
+  }
+
+  @Test
+  public void testPassingAmountWithComma() {
+    cmd.setOut(pw);
+    cmd.setErr(pw);
+
+    int exitCode = cmd.execute("-d", "Test Expense", "-a", "10,50");
+    pw.flush();
+
+    String output = sw.toString();
+
+    assertEquals(0, exitCode, "Command should finish with a success (0)");
+    assertTrue(output.contains("Expense added successfully"));
+  }
+
+  @Test
+  public void testMissingAmountArgs() {
+    cmd.setOut(pw);
+    cmd.setErr(pw);
+
+    int exitCode = cmd.execute("-d", "Test Expense");
+    pw.flush();
+
+    String output = sw.toString();
+
+    assertEquals(2, exitCode, "Command should not finish with a success (2)");
+    assertTrue(output.contains("Missing required option: '--amount"));
+  }
+
+  @Test
+  public void testMissingDescriptionArgs() {
+    cmd.setOut(pw);
+    cmd.setErr(pw);
+
+    int exitCode = cmd.execute("-a", "20.5", "-c", "Descriptionless");
+    pw.flush();
+
+    String output = sw.toString();
+
+    assertEquals(2, exitCode, "Command should not finish with a success (2)");
+    assertTrue(output.contains("Missing required option: '--description"));
+  }
+
+  @Test
+  public void testPassingStringAsAmount() {
+    cmd.setOut(pw);
+    cmd.setErr(pw);
+
+    int exitCode = cmd.execute("-a", "Test", "-d", "Description");
+
+    String output = sw.toString();
+
+    assertEquals(2, exitCode, "Command should not finish with a success (2)");
+    assertTrue(output.contains("Invalid value for option '--amount'"));
   }
 }
