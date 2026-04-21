@@ -1,3 +1,5 @@
+package model;
+
 import com.delgrau.expensetracker.model.Amount;
 import org.junit.jupiter.api.Test;
 
