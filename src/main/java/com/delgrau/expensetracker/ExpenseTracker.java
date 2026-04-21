@@ -21,11 +21,6 @@ public class ExpenseTracker implements Runnable {
     public static void main(String[] args) {
         CommandLine cmd = new CommandLine(new ExpenseTracker());
 
-        cmd.registerConverter(Amount.class, s -> {
-            double val = Double.parseDouble(s.replace(",", "."));
-            return Amount.fromCurrency(val);
-        });
-
         var exitCode = cmd.execute(args);
         System.exit(exitCode);
     }

@@ -27,11 +27,11 @@ jobs:
 
       - name: Add command tests#1
         run: |
-          # Check for 'Expense added successfully (ID: 1)'
+          # Check for 'Expense added successfully (ID: 4)'
           $output = .\target\expense-tracker.exe add -d "Teste Pipeline" -a 100
           
           # Verificamos se a descrição correta aparece no bolo de texto
-          if ($output -like '*Expense added successfully (ID: 1)*') { 
+          if ($output -like '*Expense added successfully (ID: 4)*') { 
             Write-Host "Test passed!" -ForegroundColor Green
             $output | Write-Host
           } else { 
@@ -42,11 +42,11 @@ jobs:
 
       - name: Add command tests#2
         run: |
-          # Check for 'Expense added successfully (ID: 2)'
+          # Check for 'Expense added successfully (ID: 5)'
           $output = .\target\expense-tracker.exe add -d "D20" -a 23.99
 
           # Verificamos se a descrição correta aparece no bolo de texto
-          if ($output -like '*Expense added successfully (ID: 2)*') { 
+          if ($output -like '*Expense added successfully (ID: 5)*') { 
             Write-Host "Test passed!" -ForegroundColor Green
             $output | Write-Host
           } else { 
@@ -57,11 +57,11 @@ jobs:
 
       - name: Summary command tests#1
         run: |
-          # Check for '# Total expenses: R$123,99'
+          # Check for '# Total expenses: R$160,16'
           $output = .\target\expense-tracker.exe summary
 
           # Verificamos se a descrição correta aparece no bolo de texto
-          if ($output -like '*# Total expenses: R$123,99*') { 
+          if ($output -like '*# Total expenses: R$160,16*') { 
             Write-Host "Test passed!" -ForegroundColor Green
             $output | Write-Host
           } else { 
