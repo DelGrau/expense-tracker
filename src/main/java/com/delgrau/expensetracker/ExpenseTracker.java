@@ -1,6 +1,7 @@
 package com.delgrau.expensetracker;
 
 import com.delgrau.expensetracker.commands.AddCommand;
+import com.delgrau.expensetracker.commands.ListCommand;
 import com.delgrau.expensetracker.commands.SummaryCommand;
 import com.delgrau.expensetracker.model.Amount;
 import picocli.CommandLine;
@@ -11,7 +12,7 @@ import picocli.CommandLine.Command;
     mixinStandardHelpOptions = true,
     version = "1.2",
     description = "Personal CLI app for tracking your expenses.",
-    subcommands = { AddCommand.class, SummaryCommand.class })
+    subcommands = { AddCommand.class, SummaryCommand.class, ListCommand.class})
 public class ExpenseTracker implements Runnable {
     @Override
     public void run() {
