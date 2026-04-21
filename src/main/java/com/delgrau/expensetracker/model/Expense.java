@@ -4,6 +4,8 @@ public class Expense {
     private long id = 0;
     private String description;
     private Amount value;
+    private final String description;
+    private final Amount value;
 
     public Expense (String d, Double v) {
         id++;
