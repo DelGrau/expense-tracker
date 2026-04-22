@@ -14,8 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseRepository {
-    private static final String FILE_PATH = "expenses.json";
-    private Gson gson = new GsonBuilder()
+    private final String filePath;
+    private final Gson gson;
+
+    public ExpenseRepository() {
+        this("expenses.json");
+    }
+
+    public ExpenseRepository(String filePath) {
+        this.filePath =filePath;
+
+        this.gson = new GsonBuilder()
             .registerTypeAdapter(Amount.class, (JsonSerializer<Amount>) (src, typeOfSrc, context) -> {
                 return new JsonPrimitive(src.getCents());
             })
@@ -31,10 +40,11 @@ public class ExpenseRepository {
             })
             .setPrettyPrinting()
             .create();
+    }
 
     public List<Expense> loadExpenses() {
         try {
-            Path path = Paths.get(FILE_PATH);
+            Path path = Paths.get(filePath);
             if (!Files.exists(path)) {
                 return new ArrayList<>();
             }
@@ -53,7 +63,7 @@ public class ExpenseRepository {
     public void saveExpenses(List<Expense> expenses) {
         try {
             String json = gson.toJson(expenses);
-            Files.writeString(Paths.get(FILE_PATH), json);
+            Files.writeString(Paths.get(filePath), json);
         } catch (Exception e) {
             System.err.println("Error saving the JSON file: " + e.getMessage());
         }
