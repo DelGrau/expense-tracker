@@ -30,11 +30,7 @@ public class AddCommand extends BaseCommand {
     public Integer call() {
         List<Expense> expenses = repo.loadExpenses();
 
-        long nextId = 1;
-        if (!expenses.isEmpty()) {
-            Expense lastExpense = expenses.getLast();
-            nextId = lastExpense.getId() + 1;
-        }
+        long nextId = generateNextId(expenses);
 
         Expense newExpense = new Expense(nextId, description, amount.getAmount(), category);
         expenses.add(newExpense);
@@ -44,5 +40,13 @@ public class AddCommand extends BaseCommand {
         PrintWriter out = spec.commandLine().getOut();
         out.println("Expense added successfully (ID: " + newExpense.getId() + ")");
         return 0;
+    }
+
+    private long generateNextId(List<Expense> expenses) {
+        if (expenses.isEmpty()) {
+            return 1;
+        }
+
+        return expenses.getLast().getId() + 1;
     }
 }
