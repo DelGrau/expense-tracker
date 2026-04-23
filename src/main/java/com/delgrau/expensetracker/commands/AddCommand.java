@@ -2,7 +2,6 @@ package com.delgrau.expensetracker.commands;
 
 import com.delgrau.expensetracker.model.Amount;
 import com.delgrau.expensetracker.model.Expense;
-import com.delgrau.expensetracker.repository.ExpenseRepository;
 import com.delgrau.expensetracker.converter.AmountConverter;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
@@ -11,10 +10,9 @@ import picocli.CommandLine.Spec;
 
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 @Command(name = "add", description = "Adds a new expense.")
-public class AddCommand implements Callable<Integer> {
+public class AddCommand extends BaseCommand {
 
     @Spec 
     CommandSpec spec;
@@ -30,15 +28,9 @@ public class AddCommand implements Callable<Integer> {
 
     @Override
     public Integer call() {
-        ExpenseRepository repo = new ExpenseRepository();
-
         List<Expense> expenses = repo.loadExpenses();
 
-        long nextId = 1;
-        if (!expenses.isEmpty()) {
-            Expense lastExpense = expenses.getLast();
-            nextId = lastExpense.getId() + 1;
-        }
+        long nextId = generateNextId(expenses);
 
         Expense newExpense = new Expense(nextId, description, amount.getAmount(), category);
         expenses.add(newExpense);
@@ -48,5 +40,13 @@ public class AddCommand implements Callable<Integer> {
         PrintWriter out = spec.commandLine().getOut();
         out.println("Expense added successfully (ID: " + newExpense.getId() + ")");
         return 0;
+    }
+
+    private long generateNextId(List<Expense> expenses) {
+        if (expenses.isEmpty()) {
+            return 1;
+        }
+
+        return expenses.getLast().getId() + 1;
     }
 }

@@ -1,25 +1,22 @@
 package com.delgrau.expensetracker.commands;
 
 import com.delgrau.expensetracker.model.Expense;
-import com.delgrau.expensetracker.repository.ExpenseRepository;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Spec;
 import picocli.CommandLine.Model.CommandSpec;
 
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 @Command(name = "list",
         description = "Show a detailed list of expenses.")
-public class ListCommand implements Callable<Integer> {
+public class ListCommand extends BaseCommand {
 
     @Spec
     CommandSpec spec;
 
     @Override
     public Integer call() throws Exception {
-        ExpenseRepository repo = new ExpenseRepository();
         List<Expense> expenses = repo.loadExpenses();
 
         if (expenses == null || expenses.isEmpty()) {

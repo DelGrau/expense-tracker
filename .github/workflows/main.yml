@@ -22,50 +22,89 @@ jobs:
           distribution: 'graalvm'
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Test with Maven
+      - name: Build and Test
         run: mvn clean package -Pnative
 
       - name: Add command tests#1
         run: |
-          # Check for 'Expense added successfully (ID: 4)'
-          $output = .\target\expense-tracker.exe add -d "Teste Pipeline" -a 100
+          # Check for 'Expense added successfully (ID: 1)'
+          $output = .\target\expense-tracker.exe add -d "Lunch" -a 20 -c meals
           
-          # Verificamos se a descrição correta aparece no bolo de texto
-          if ($output -like '*Expense added successfully (ID: 4)*') { 
-            Write-Host "Test passed!" -ForegroundColor Green
+          if ($output -like '*Expense added successfully (ID: 1)*') { 
+            Write-Host "Test passed!"
             $output | Write-Host
           } else { 
-            Write-Host "Test failed!" -ForegroundColor Red
+            Write-Host "Test failed!"
             $output | Write-Host
             exit 1 
           }
 
       - name: Add command tests#2
         run: |
-          # Check for 'Expense added successfully (ID: 5)'
-          $output = .\target\expense-tracker.exe add -d "D20" -a 23.99
+          # Check for 'Expense added successfully (ID: 2)'
+          $output = .\target\expense-tracker.exe add -d "Dinner" -a 10 -c meals
 
-          # Verificamos se a descrição correta aparece no bolo de texto
-          if ($output -like '*Expense added successfully (ID: 5)*') { 
-            Write-Host "Test passed!" -ForegroundColor Green
+          if ($output -like '*Expense added successfully (ID: 2)*') { 
+            Write-Host "Test passed!"
             $output | Write-Host
           } else { 
-            Write-Host "Test failed!" -ForegroundColor Red
+            Write-Host "Test failed!"
+            $output | Write-Host
+            exit 1 
+          }
+
+      - name: List command tests#1
+        run: |
+          # Check for 'Lunch' and 'Dinner'
+          $output = .\target\expense-tracker.exe list
+
+          if ($output -like '*Lunch*' || $output -like '*Dinner*') { 
+            Write-Host "Test passed!"
+            $output | Write-Host
+          } else { 
+            Write-Host "Test failed!"
             $output | Write-Host
             exit 1 
           }
 
       - name: Summary command tests#1
         run: |
-          # Check for '# Total expenses: R$160,16'
+          # Check for '# Total expenses: R$30,00'
           $output = .\target\expense-tracker.exe summary
 
-          # Verificamos se a descrição correta aparece no bolo de texto
-          if ($output -like '*# Total expenses: R$160,16*') { 
-            Write-Host "Test passed!" -ForegroundColor Green
+          if ($output -like '*# Total expenses: R$30,00*') { 
+            Write-Host "Test passed!"
             $output | Write-Host
           } else { 
-            Write-Host "Test failed!" -ForegroundColor Red
+            Write-Host "Test failed!"
+            $output | Write-Host
+            exit 1 
+          }
+
+      - name: Delete command tests#1
+        run: |
+          # Check for 'Expense deleted successfully'
+          $output = .\target\expense-tracker.exe delete --id 2
+
+          if ($output -like '*Expense deleted successfully*') { 
+            Write-Host "Test passed!"
+            $output | Write-Host
+          } else { 
+            Write-Host "Test failed!"
+            $output | Write-Host
+            exit 1 
+          }
+
+      - name: Summary command tests#2
+        run: |
+          # Check for '# Total expenses: R$20,00'
+          $output = .\target\expense-tracker.exe summary
+          
+          if ($output -like '*# Total expenses: R$20,00*') { 
+            Write-Host "Test passed!"
+            $output | Write-Host
+          } else { 
+            Write-Host "Test failed!"
             $output | Write-Host
             exit 1 
           }

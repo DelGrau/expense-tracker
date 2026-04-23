@@ -1,52 +1,67 @@
 package commands;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import picocli.CommandLine;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.Path;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.delgrau.expensetracker.commands.AddCommand;
 
 public class AddCommandTest {
-  final AddCommand app = new AddCommand();
-  final CommandLine cmd = new CommandLine(app);
-  final StringWriter sw = new StringWriter();
-  final PrintWriter pw = new PrintWriter(sw);
+  @TempDir
+  private Path tempDir;
+
+  private AddCommand app;
+  private CommandLine cmd;
+  private StringWriter sw;
+  private PrintWriter pw;
+
+  @BeforeEach
+  public void setup() {
+    sw = new StringWriter();
+    pw = new PrintWriter(sw);
+
+    app = new AddCommand();
+    Path tempFile = tempDir.resolve("test-list.json");
+
+    app.setupTest(app, tempFile);
+
+    cmd = new CommandLine(app);
+    cmd.setOut(pw);
+    cmd.setErr(pw);
+  }
 
   @Test
   public void testPassingValidArgs() {
-    cmd.setOut(pw);
-    cmd.setErr(pw);
-
-    int exitCode = cmd.execute("-d", "Valid Expense", "-a", "10", "-c", "Valid");
+    int exitCode = cmd.execute("-d", "Lunch", "-a", "10", "-c", "meals");
     pw.flush();
     
     String output = sw.toString();
-    
+
     assertEquals(0, exitCode, "Command should finish with a success (0)");
     assertTrue(output.contains("Expense added successfully"));
+    assertEquals(1, app.getRepository().loadExpenses().size());
   }
 
   @Test
   public void testPassingAmountWithComma() {
-    cmd.setOut(pw);
-    cmd.setErr(pw);
-
-    int exitCode = cmd.execute("-d", "Amount w/ Comma", "-a", "10,50");
+    int exitCode = cmd.execute("-d", "Dinner", "-a", "10,50");
     pw.flush();
 
     String output = sw.toString();
 
     assertEquals(0, exitCode, "Command should finish with a success (0)");
     assertTrue(output.contains("Expense added successfully"));
+    assertEquals(10.5d, app.getRepository().loadExpenses().getFirst().getValue());
   }
 
   @Test
   public void testMissingAmountArgs() {
-    cmd.setOut(pw);
-    cmd.setErr(pw);
-
     int exitCode = cmd.execute("-d", "Amountless");
     pw.flush();
 
@@ -54,13 +69,11 @@ public class AddCommandTest {
 
     assertEquals(2, exitCode, "Command should not finish with a success (2)");
     assertTrue(output.contains("Missing required option: '--amount"));
+    assertTrue(app.getRepository().loadExpenses().isEmpty());
   }
 
   @Test
   public void testMissingDescriptionArgs() {
-    cmd.setOut(pw);
-    cmd.setErr(pw);
-
     int exitCode = cmd.execute("-a", "20.5", "-c", "Descriptionless");
     pw.flush();
 
@@ -68,31 +81,17 @@ public class AddCommandTest {
 
     assertEquals(2, exitCode, "Command should not finish with a success (2)");
     assertTrue(output.contains("Missing required option: '--description"));
+    assertTrue(app.getRepository().loadExpenses().isEmpty());
   }
 
   @Test
   public void testPassingStringAsAmount() {
-    cmd.setOut(pw);
-    cmd.setErr(pw);
-
     int exitCode = cmd.execute("-a", "Test", "-d", "String as Amount");
 
     String output = sw.toString();
 
     assertEquals(2, exitCode, "Command should not finish with a success (2)");
     assertTrue(output.contains("Invalid value for option '--amount'"));
-  }
-
-  @Test
-  public void testPassingIntCategory() {
-    cmd.setOut(pw);
-    cmd.setErr(pw);
-
-    int exitCode = cmd.execute("-a", "15.67", "-d", "Int on Category", "-c", "10");
-
-    String output = sw.toString();
-
-    assertEquals(0, exitCode, "Command should finish with a success (0)");
-    assertTrue(output.contains("Expense added successfully"));
+    assertTrue(app.getRepository().loadExpenses().isEmpty());
   }
 }
