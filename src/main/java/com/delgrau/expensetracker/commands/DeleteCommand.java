@@ -1,30 +1,22 @@
 package com.delgrau.expensetracker.commands;
 
 import com.delgrau.expensetracker.model.Expense;
-import com.delgrau.expensetracker.repository.ExpenseRepository;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Spec;
 import picocli.CommandLine.Model.CommandSpec;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 @Command(name = "delete",
         description = "Delete a expense by passing its ID.")
-public class DeleteCommand implements Callable<Integer> {
+public class DeleteCommand extends BaseCommand {
 
     @Spec
     private CommandSpec spec;
 
     @Option(names = {"--id"}, required = true, description = "Expense ID to be deleted.")
     private int expenseID;
-
-    private ExpenseRepository repo = new ExpenseRepository();
-
-    public void setRepository(ExpenseRepository repo) {
-        this.repo = repo;
-    }
 
     @Override
     public Integer call() throws Exception {

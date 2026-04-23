@@ -2,7 +2,6 @@ package com.delgrau.expensetracker.commands;
 
 import com.delgrau.expensetracker.model.Amount;
 import com.delgrau.expensetracker.model.Expense;
-import com.delgrau.expensetracker.repository.ExpenseRepository;
 import com.delgrau.expensetracker.converter.AmountConverter;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
@@ -11,10 +10,9 @@ import picocli.CommandLine.Spec;
 
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 @Command(name = "add", description = "Adds a new expense.")
-public class AddCommand implements Callable<Integer> {
+public class AddCommand extends BaseCommand {
 
     @Spec 
     CommandSpec spec;
@@ -30,8 +28,6 @@ public class AddCommand implements Callable<Integer> {
 
     @Override
     public Integer call() {
-        ExpenseRepository repo = new ExpenseRepository();
-
         List<Expense> expenses = repo.loadExpenses();
 
         long nextId = 1;

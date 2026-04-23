@@ -1,9 +1,10 @@
 package commands;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import com.delgrau.expensetracker.commands.DeleteCommand;
 import com.delgrau.expensetracker.model.Expense;
-import com.delgrau.expensetracker.repository.ExpenseRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import picocli.CommandLine;
@@ -17,14 +18,22 @@ import java.util.List;
 
 public class DeleteCommandTest {
     @TempDir
-    Path tempDir;
+    private Path tempDir;
 
-    final StringWriter sw = new StringWriter();
-    final PrintWriter pw = new PrintWriter(sw);
+    private DeleteCommand app;
+    private CommandLine cmd;
+    private StringWriter sw;
+    private PrintWriter pw;
 
-    private ExpenseRepository init() {
+    @BeforeEach
+    public void setup() {
+        sw = new StringWriter();
+        pw = new PrintWriter(sw);
+
+        app = new DeleteCommand();
         Path tempFile = tempDir.resolve("test-delete.json");
-        ExpenseRepository repo = new ExpenseRepository(tempFile.toString());
+
+        app.setupTest(app, tempFile);
 
         List<Expense> initialData = new ArrayList<>();
         initialData.add(new Expense(
@@ -42,29 +51,21 @@ public class DeleteCommandTest {
                 )
         );
 
-        repo.saveExpenses(initialData);
+        app.getRepository().saveExpenses(initialData);
 
-        return repo;
+        cmd = new CommandLine(app);
+        cmd.setOut(pw);
+        cmd.setErr(pw);
     }
 
     @Test
     public void testDeleteExistingExpense() {
-
-        ExpenseRepository repo = init();
-
-        DeleteCommand app = new DeleteCommand();
-        app.setRepository(repo);
-        CommandLine cmd = new CommandLine(app);
-
-        cmd.setOut(pw);
-        cmd.setErr(pw);
-
         int exitCode = cmd.execute("--id", "1");
         pw.flush();
 
         String output = sw.toString();
 
-        List<Expense> afterDelete = repo.loadExpenses();
+        List<Expense> afterDelete = app.getRepository().loadExpenses();
 
         assertEquals(0, exitCode, "Should be able to delete the expense. Expected code (0)");
         assertTrue(output.contains("deleted successfully"));
@@ -74,15 +75,6 @@ public class DeleteCommandTest {
 
     @Test
     public void testDeletingInvalidExpense() {
-        ExpenseRepository repo = init();
-
-        DeleteCommand app = new DeleteCommand();
-        app.setRepository(repo);
-        CommandLine cmd = new CommandLine(app);
-
-        cmd.setOut(pw);
-        cmd.setErr(pw);
-
         int exitCode = cmd.execute("--id", "3");
         pw.flush();
 
