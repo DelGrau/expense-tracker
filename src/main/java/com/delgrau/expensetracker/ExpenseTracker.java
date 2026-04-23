@@ -10,7 +10,7 @@ import picocli.CommandLine.Command;
 @Command(
     name = "expense-tracker",
     mixinStandardHelpOptions = true,
-    version = "1.2",
+    version = "version 0.1.4 (add, delete, list, summary)",
     description = "Personal CLI app for tracking your expenses.",
     subcommands = { AddCommand.class, SummaryCommand.class, ListCommand.class, DeleteCommand.class })
 public class ExpenseTracker implements Runnable {
