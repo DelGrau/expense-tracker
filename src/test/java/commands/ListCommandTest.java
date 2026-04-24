@@ -75,7 +75,7 @@ public class ListCommandTest {
         System.out.println("Passing an empty list:\n" + output);
 
         assertEquals(1, exitCode, "Program should finish with error (1)");
-        assertTrue(output.contains("Expense list is empty"));
+        assertTrue(output.contains("List is empty"));
     }
 
     @Test
@@ -89,6 +89,6 @@ public class ListCommandTest {
         System.out.println("Passing null:\n" + output);
 
         assertEquals(1, exitCode, "Program should finish with error (1)");
-        assertTrue(output.contains("Could not open expenses file"));
+        assertTrue(output.contains("Could not open file"));
     }
 }
