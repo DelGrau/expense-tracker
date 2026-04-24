@@ -32,7 +32,7 @@ public class ExpenseRepository {
                 int cents = json.getAsInt();
                 return Amount.fromCurrency(cents / 100.0);
             })
-            .registerTypeAdapter(Category.class, (JsonSerializer<Category>) (src, typpeOfSrc, context) -> {
+            .registerTypeAdapter(Category.class, (JsonSerializer<Category>) (src, typeOfSrc, context) -> {
                 return new JsonPrimitive(src.getDescription());
             })
             .registerTypeAdapter(Category.class, (JsonDeserializer<Category>) (json, typeOfT, context) -> {
