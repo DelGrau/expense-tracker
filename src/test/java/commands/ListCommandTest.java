@@ -57,9 +57,9 @@ public class ListCommandTest {
         System.out.println(output);
 
         assertEquals(0, exitCode, "Program should finish with success (0)");
-        assertTrue(output.contains("Lunch"));
-        assertTrue(output.contains("R$20,00"));
-        assertTrue(output.contains("Category"));
+        assertTrue(output.contains("Lunch"), "Expected `Lunch` at line `# 1`");
+        assertEquals(20d, data.get(1).getValue(), "Expected `R$20,00` at line '# 2'");
+        assertTrue(output.contains("Category"), "Expected `Category` at the header");
     }
 
     @Test
