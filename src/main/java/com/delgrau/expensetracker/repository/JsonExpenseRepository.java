@@ -13,16 +13,15 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpenseRepository {
-    private final String filePath;
+public class JsonExpenseRepository extends BaseFileRepository{
     private final Gson gson;
 
-    public ExpenseRepository() {
+    public JsonExpenseRepository() {
         this("expenses.json");
     }
 
-    public ExpenseRepository(String filePath) {
-        this.filePath =filePath;
+    public JsonExpenseRepository(String filePath) {
+        super(filePath);
 
         this.gson = new GsonBuilder()
             .registerTypeAdapter(Amount.class, (JsonSerializer<Amount>) (src, typeOfSrc, context) -> {
@@ -42,6 +41,7 @@ public class ExpenseRepository {
             .create();
     }
 
+    @Override
     public List<Expense> loadExpenses() {
         try {
             Path path = Paths.get(filePath);

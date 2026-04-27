@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.delgrau.expensetracker.commands.SummaryCommand;
 import com.delgrau.expensetracker.model.Expense;
+import com.delgrau.expensetracker.repository.JsonExpenseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -32,7 +33,8 @@ public class SummaryCommandTest {
         app = new SummaryCommand();
         Path tempFile = tempDir.resolve("test-summary.json");
 
-        app.setupTest(app, tempFile);
+        var repo = new JsonExpenseRepository(tempFile.toString());
+        app.setupTest(app, repo);
 
         List<Expense> initialData = new ArrayList<>();
         initialData.add(new Expense(

@@ -1,5 +1,6 @@
 package commands;
 
+import com.delgrau.expensetracker.repository.JsonExpenseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -29,7 +30,8 @@ public class AddCommandTest {
     app = new AddCommand();
     Path tempFile = tempDir.resolve("test-list.json");
 
-    app.setupTest(app, tempFile);
+    var repo = new JsonExpenseRepository(tempFile.toString());
+    app.setupTest(app, repo);
 
     cmd = new CommandLine(app);
     cmd.setOut(pw);
