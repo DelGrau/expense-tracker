@@ -53,7 +53,7 @@ public class Expense {
          * # 1   2026-04-13  Test         R$20    Testing
          */
 
-        return String.format("# ID  Description  Amount\n# %-3d  %-11s  R$%-5s %s",
+        return String.format("EXPENSE {\n\t\"id\": \"%d\",\n\t\"description\": \"%s\",\n\t\"amount\": \"R$%s\",\n\t\"category\": \"%s\"\n}",
                 getId(), getDescription(), value.toString(), getCategory());
     }
 }
